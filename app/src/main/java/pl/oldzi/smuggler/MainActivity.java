@@ -1,5 +1,6 @@
 package pl.oldzi.smuggler;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void add(View view) {
-
+        Intent intent = new Intent(MainActivity.this, AddActivity.class);
+        startActivity(intent);
     }
 
     public void sell(View view) {
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void products(View view) {
-
+        Intent intent = new Intent(MainActivity.this, ProductsActivity.class);
+        startActivity(intent);
     }
 
     public void bossMode(View view) {

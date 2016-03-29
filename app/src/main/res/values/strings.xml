@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Smuggler</string>
+    <string name="name">Name</string>
+    <string name="codename">Codename</string>
+    <string name="id">Item Id</string>
+    <string name="quantity">Quantity</string>
 </resources>
