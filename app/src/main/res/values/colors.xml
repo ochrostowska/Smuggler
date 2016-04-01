@@ -9,6 +9,9 @@
     <color name="colorOrangeCasablanca">#f4b350</color>
     <color name="colorPurpleBackground">#4a148c</color>
 
+    <color name="colorOrangeVisible">#adf4b350</color>
+    <color name="colorPurpleVisible">#6c30b6</color>
+
     <color name="white">#fff</color>
     <color name="black">#000</color>
 </resources>

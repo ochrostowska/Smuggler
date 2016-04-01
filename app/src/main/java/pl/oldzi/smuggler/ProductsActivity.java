@@ -1,103 +1,99 @@
 package pl.oldzi.smuggler;
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Arrays;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class ProductsActivity extends AppCompatActivity {
 
-    //Root URL of our web service
     public static final String ROOT_URL = "http://10.0.3.2/webapp/";
 
-    //List view to show data
     private ListView listView;
+    private AutoCompleteTextView textView;
+    DatabaseHelper databaseHelper;
 
-    //List of type books this list will store type Book which is our data model
     private List<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.products_layout);
+        EventBus.getDefault().register(this);
 
-        //Initializing the listview
         listView = (ListView) findViewById(R.id.listViewProducts);
-
-        //Calling the method that will fetch data
-        getItems();
-
-        //Setting onItemClickListener to listview
+        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTV);
+        databaseHelper = new DatabaseHelper(this);
+        databaseHelper.downloadData();
 
     }
 
-    private void getItems(){
-        //While the app fetched data we are displaying a progress dialog
-        final ProgressDialog loading = ProgressDialog.show(this,"Fetching Data","Please wait...",false,false);
-
-        //Creating a rest adapter
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL)
-                .build();
-
-        //Creating an object of our api interface
-        ItemsAPI api = adapter.create(ItemsAPI.class);
-
-        //Defining the method
-        api.getItems(new Callback<List<Item>>() {
-            @Override
-            public void success(List<Item> list, Response response) {
-                //Dismissing the loading progressbar
-                loading.dismiss();
-
-                    //Storing the data in our list
-                    items = list;
-                    Log.d("MIMI", "Items size is : " + items.size());
-                    Log.d("MIMI", "Items 1 name is : " + items.get(1).getName());
-                    Log.d("MIMI", "Items 0 codename is : " + items.get(0).getCodename());
-
-                    //Calling a method to show the list
-                    showList();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                //you can handle the errors here
-                Log.d("MIMI", error.getMessage());
-            }
-        });
+    @Subscribe
+    public void onEvent(MessageEvent event) {
+        Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
+        showList();
     }
 
-    //Our method to show list
     private void showList(){
-        //String array to store all the book names
-        String[] names = new String[items.size()];
+        final String[] names = databaseHelper.getNames();
 
-        Log.d("MIMI", "Names length is : " + names.length);
-
-        //Traversing through the whole list to get all the names
-        for(int i=0; i<items.size(); i++){
-            //Storing names to string array
-            names[i] = items.get(i).getName();
-            Log.d("MIMI", "Names[" +i+"] is " + names[i]);
-        }
-
-        //Creating an array adapter for list view
+        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, names);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.simple_list,names);
 
-        //Setting adapter to listview
+        autoCompleteTextViewSettings(names);
         listView.setAdapter(adapter);
+        textView.setAdapter(autoCompleteAdapter);
+
     }
 
+    private void autoCompleteTextViewSettings(final String[] dropDownlist) {
+        textView.setDropDownBackgroundResource(R.color.colorPurpleVisible);
+        textView.setThreshold(0);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.showDropDown();
+            }
+        });
+        textView.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                String answerName = textView.getText().toString();
+                int index = Arrays.asList(dropDownlist).indexOf(answerName);
+                if (index == -1) {
+                    Log.d("MAMA2", answerName + "isnt here");
+                } else {
+                    Log.d("MAMA2", answerName + "is here");
+                }
+            }
+        });
 
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 }
 

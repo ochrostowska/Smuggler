@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_view_margin"
             android:textSize="30dp"
+            android:textAppearance="@style/TextAppearance.FontBold"
             android:gravity="center_horizontal"
             android:text="Add new item"
             android:textAllCaps="false" />
@@ -83,6 +84,7 @@
             android:layout_gravity="center_horizontal"
             android:onClick="addItem"
             android:text="add"
+            android:layout_marginTop="20dp"
 
             android:background="@drawable/background_selector"/>
 </LinearLayout>

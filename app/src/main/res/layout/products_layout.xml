@@ -9,7 +9,20 @@
     tools:context=".MainActivity"
     android:background="@color/colorPurpleBackground">
 
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"/>
+
+    <AutoCompleteTextView
+        android:layout_below="@+id/tv"
+        android:id="@+id/autoCompleteTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
+        android:layout_below="@+id/autoCompleteTV"
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

@@ -1,10 +1,13 @@
 package pl.oldzi.smuggler;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sell(View view) {
+        Intent intent = new Intent(MainActivity.this, SellActivity.class);
+        startActivity(intent);
 
     }
 
     public void products(View view) {
         Intent intent = new Intent(MainActivity.this, ProductsActivity.class);
+
         startActivity(intent);
     }
 
@@ -41,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
 }

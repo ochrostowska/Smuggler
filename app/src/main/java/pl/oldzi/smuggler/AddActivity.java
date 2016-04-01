@@ -1,21 +1,14 @@
 package pl.oldzi.smuggler;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class AddActivity extends AppCompatActivity {
@@ -25,6 +18,7 @@ public class AddActivity extends AppCompatActivity {
     private TextInputEditText editTextCodename;
     private TextInputEditText editTextName;
     private TextInputEditText editTextQuantity;
+    private DatabaseHelper databaseHelper;
 
     private Button addButton;
 
@@ -38,71 +32,20 @@ public class AddActivity extends AppCompatActivity {
 
         //Initializing Views
 
-        editTextId = (TextInputEditText) findViewById(R.id.input_id);
-        editTextCodename = (TextInputEditText) findViewById(R.id.input_codename);
-        editTextName = (TextInputEditText) findViewById(R.id.input_name);
-        editTextQuantity = (TextInputEditText) findViewById(R.id.input_quantity);
-        addButton = (Button) findViewById(R.id.addButton);
-
+        editTextId          = (TextInputEditText) findViewById(R.id.input_id);
+        editTextCodename    = (TextInputEditText) findViewById(R.id.input_codename);
+        editTextName        = (TextInputEditText) findViewById(R.id.input_name);
+        editTextQuantity    = (TextInputEditText) findViewById(R.id.input_quantity);
+        addButton           = (Button) findViewById(R.id.addButton);
     }
 
-
     private void insertUser() {
-        //Here we will handle the http request to insert user to mysql db
-        //Creating a RestAdapter
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL) //Setting the Root URL
-                .build(); //Finally building the adapter
-
-        //Creating object for our interface
-        RegisterAPI api = adapter.create(RegisterAPI.class);
-
-        int nine = Integer.parseInt(editTextQuantity.getText().toString());
-
-
-        //Defining the method insertuser of our interface
-        api.insertUser(
-
-                //Passing the values by getting it from editTexts
-                editTextId.getText().toString(),
-                editTextCodename.getText().toString(),
-                editTextName.getText().toString(),
-                nine,
-
-                //Creating an anonymous callback
-                new Callback<Response>() {
-                    @Override
-                    public void success(Response result, Response response) {
-                        //On success we will read the server's output using bufferedreader
-                        //Creating a bufferedreader object
-                        BufferedReader reader = null;
-
-                        Log.d("MIMI", "Callback response is : " +response.getBody());
-                        //An string to store output from the server - czyli to co echuję
-                        String output = "";
-
-                        try {
-                            //Initializing buffered reader
-                            reader = new BufferedReader(new InputStreamReader(result.getBody().in()));
-
-                            //Reading the output in the string
-                            output = reader.readLine();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        //Displaying the output as a toast
-                        Toast.makeText(AddActivity.this, output, Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        //If any error occured displaying the error as toast
-                        Log.d("MIMI", error.getMessage());
-                        Toast.makeText(AddActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
+        int id = Integer.parseInt(editTextId.getText().toString());
+        String codename = editTextCodename.getText().toString();
+        String name = editTextName.getText().toString();
+        int quantity = Integer.parseInt(editTextQuantity.getText().toString());
+        databaseHelper = new DatabaseHelper(this);
+        databaseHelper.sendData(id, codename, name, quantity);
     }
 
     public void addItem(View view) {
@@ -119,6 +62,11 @@ public class AddActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
 //

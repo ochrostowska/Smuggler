@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.FontBold" parent="android:TextAppearance">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/segoeui.ttf</item>
+    </style>
+
     <style name="AppTheme.Activities" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="colorPrimary">@color/colorPrimaryDark</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
