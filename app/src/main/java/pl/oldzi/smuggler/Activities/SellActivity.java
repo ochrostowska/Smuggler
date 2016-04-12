@@ -1,10 +1,10 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.Activities;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -12,25 +12,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.Arrays;
-import java.util.List;
 
+import pl.oldzi.smuggler.DatabaseHelper;
+import pl.oldzi.smuggler.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class SellActivity extends AppCompatActivity {
+public class SellActivity extends BaseMenuActivity {
 
     private AutoCompleteTextView textView;
-    private List<Item> items;
     private TextView idTV, codenameTV;
     private TextInputEditText quantityET;
-    DatabaseHelper databaseHelper;
     private Button sellButton;
     private boolean readyTosend=false;
     private String sendName, sendCodename;
     private int sendQuantity, sendId;
+    private int index;
+    private DatabaseHelper databaseHelper;
     String answerName = "item";
 
 
@@ -38,24 +36,18 @@ public class SellActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sell_layout);
-        EventBus.getDefault().register(this);
         textView = (AutoCompleteTextView) findViewById(R.id.nameAutoCompleteTV);
         idTV = (TextView) findViewById(R.id.textView_id);
-        sellButton = (Button) findViewById(R.id.sellButton);
+        sellButton = (Button) findViewById(R.id.buttonSell);
         codenameTV = (TextView) findViewById(R.id.textView_codename);
         quantityET = (TextInputEditText) findViewById(R.id.textinput_quantity);
-        databaseHelper = new DatabaseHelper(this);
-        databaseHelper.downloadData();
-
-    }
-
-    @Subscribe
-    public void onEvent(MessageEvent event) {
-        Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
+        sellButton.setEnabled(false);
+        databaseHelper = new DatabaseHelper();
         getNames();
+
     }
 
-    private void getNames(){
+    private void getNames() {
         final String[] names = databaseHelper.getNames();
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, names);
         textView.setAdapter(autoCompleteAdapter);
@@ -63,7 +55,6 @@ public class SellActivity extends AppCompatActivity {
     }
 
     private void autoCompleteTextViewSettings(final String[] dropDownList) {
-//        sellButton.setEnabled(false);
         textView.setDropDownBackgroundResource(R.color.colorPurpleVisible);
         textView.setThreshold(0);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -72,26 +63,35 @@ public class SellActivity extends AppCompatActivity {
                 textView.showDropDown();
             }
         });
-
-        textView.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+        textView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDismiss() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 answerName = textView.getText().toString();
-                int index = Arrays.asList(dropDownList).indexOf(answerName);
+                index = Arrays.asList(dropDownList).indexOf(answerName);
 
                 if (index == -1) {
-                    idTV.setText(" ");
-                    codenameTV.setText(" ");
-                    Log.d("MAMA2", answerName + "isnt here");
+                    idTV        .setText(" ");
+                    codenameTV  .setText(" ");
+
+                    sellButton.setEnabled(false);
                     readyTosend = false;
 
                 } else {
-                    sendName = answerName;
-                    sendId = databaseHelper.getItemId(index);
-                    sendCodename = databaseHelper.getCodename(index);
-                    idTV.setText(String.valueOf(sendId));
-                    codenameTV.setText(sendCodename);
-                    Log.d("MAMA2", answerName + " is here");
+                    sendName        = answerName;
+                    sendId          = DatabaseHelper.getItemId(index);
+                    sendCodename    = DatabaseHelper.getCodename(index);
+                    idTV            .setText(String.valueOf(sendId));
+                    codenameTV      .setText(sendCodename);
+
+                    sellButton.setEnabled(true);
                     readyTosend = true;
                 }
             }
@@ -104,24 +104,18 @@ public class SellActivity extends AppCompatActivity {
     }
 
     public void sellItem(View view) {
-       int ggg = 1;
+       int numberToSell = 1;
         if(readyTosend) {
-            ggg = Integer.parseInt(quantityET.getText().toString())*(-1);
-            sendQuantity = Integer.parseInt(quantityET.getText().toString())*(-1);
+            sendQuantity = Integer.parseInt(quantityET.getText().toString());
             DatabaseHelper helper = new DatabaseHelper(this);
-            helper.sendData(sendId, sendCodename, sendName, sendQuantity);
+            if(sendQuantity<helper.getQuantity(index)) {
+                sendQuantity=sendQuantity*(-1);
+                helper.sendData(sendId, sendCodename, sendName, sendQuantity);
+            } else {
+                quantityET.setTextColor(getResources().getColor(R.color.colorPrimary));
+                Toast.makeText(this, "Too much", Toast.LENGTH_SHORT).show(); }
         }
-        else{
-            Toast.makeText(this, "We have no " + answerName + " here", Toast.LENGTH_SHORT).show();
-        }
-
-        Toast.makeText(this, "Its " + ggg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
+        Toast.makeText(this, "Its " + numberToSell, Toast.LENGTH_SHORT).show();
     }
 }
 

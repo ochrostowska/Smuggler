@@ -8,34 +8,69 @@
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_view_margin"
-        android:textSize="30dp"
-        android:textAppearance="@style/TextAppearance.FontBold"
-        android:gravity="center_horizontal"
-        android:text="Sell item"
-        android:textAllCaps="false" />
 
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/sell"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_view_margin"
+            android:textSize="32dp"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.FontBold"
+            android:text="Sell item"
+            android:textAllCaps="false" />
+
+
+    <TextView
+        android:id="@+id/tt2"
+        android:text="Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <AutoCompleteTextView
         android:id="@+id/nameAutoCompleteTV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textSize="24sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
 
+    <TextView
+        android:id="@+id/tt3"
+        android:text="Codename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/textView_codename"
-        android:text="Codename"
         android:padding="10dp"
+        android:text="Codename"
+        android:textSize="20sp"
+        android:textColor="@color/colorOrangeCasablanca"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
     <TextView
-        android:id="@+id/textView_id"
-        android:text="ID"
-        android:padding="10dp"
+        android:id="@+id/tt4"
+        android:text="Id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView_id"
+        android:text=" "
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/colorOrangeCasablanca"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -47,6 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_view_margin"
             android:hint="Quantity"
+            android:textSize="20dp"
+            android:padding="10dp"
             android:imeOptions="flagNoExtractUi"
             android:inputType="number" />
 
@@ -60,6 +97,8 @@
         android:layout_gravity="center_horizontal"
         android:onClick="sellItem"
         android:text="Sell"
+        android:textSize="20dp"
+        android:textAllCaps="false"
         android:layout_marginTop="20dp"
 
         android:background="@drawable/background_selector"/>

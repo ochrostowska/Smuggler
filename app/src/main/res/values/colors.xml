@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#e2000000</color>
+    <color name="colorPrimary">#1d1d1d</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">@color/colorOrangeCasablanca</color>
     <color name="colorOrangeJaffa">#EB974E</color>
     <color name="colorOrangeLightning">#f5ab35</color>
     <color name="colorOrangeButtercup">#f39c12</color>
     <color name="colorOrangeCasablanca">#f4b350</color>
     <color name="colorPurpleBackground">#4a148c</color>
-
+    <color name="transparent">@android:color/transparent</color>
     <color name="colorOrangeVisible">#adf4b350</color>
     <color name="colorPurpleVisible">#6c30b6</color>
+    <color name="colorPurpleLight">#7950ac</color>
 
     <color name="white">#fff</color>
     <color name="black">#000</color>

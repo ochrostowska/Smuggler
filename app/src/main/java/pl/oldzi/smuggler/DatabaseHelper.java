@@ -17,12 +17,18 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class DatabaseHelper {
-    public static final String ROOT_URL = "http://10.0.3.2/webapp/";
+    public static final String ROOT_URL = "https://patryk-mnie-uczy.azurewebsites.net/";
     static List<Item> items;
     private Context context;
 
+    public DatabaseHelper() {}
+
     public DatabaseHelper(Context context) {
         this.context = context;
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 
     public void sendData(int id, String codename, String name, int quantity) {
@@ -82,11 +88,11 @@ public class DatabaseHelper {
         api.getItems(new Callback<List<Item>>() {
             @Override
             public void success(List<Item> list, Response response) {
-                 items = list;
+                items = list;
 
-                Log.d("MIMI", "Items size is "+items.size());
+                Log.d("MIMI", "Items size is " + items.size());
 
-                EventBus.getDefault().post(new MessageEvent("Hello its me"));
+                EventBus.getDefault().post(new MessageEvent("Downloading successful"));
             }
 
             @Override
@@ -100,7 +106,6 @@ public class DatabaseHelper {
         final String[] names = new String[items.size()];
         for (int i = 0; i < items.size(); i++) {
             names[i] = items.get(i).getName();
-
         }
         return names;
     }
@@ -113,6 +118,14 @@ public class DatabaseHelper {
         return codenames;
     }
 
+    public String[] getIds() {
+        final String[] ids = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            ids[i] = String.valueOf(items.get(i).getItem_id());
+        }
+        return ids;
+    }
+
     public int[] getQuantities() {
         final int[] quantities = new int[items.size()];
         for (int i = 0; i < items.size(); i++) {
@@ -121,19 +134,24 @@ public class DatabaseHelper {
         return quantities;
     }
 
+    public String getName(int id) {
+        return items.get(id).getName();
+    }
 
-    public String getCodename(int id) {
+    public static String getCodename(int id) {
         return items.get(id).getCodename();
     }
 
 
-    public int getQuantity(int id) {
+    public static int getQuantity(int id) {
         return items.get(id).getQuantity();
     }
 
-    public int getItemId(int id) {
+    public static int getItemId(int id) {
         return items.get(id).getItem_id();
     }
+
+
 
 }
 

@@ -1,17 +1,19 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import pl.oldzi.smuggler.DatabaseHelper;
+import pl.oldzi.smuggler.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends BaseMenuActivity {
 
     //Declaring views
     private TextInputEditText editTextId;
@@ -29,6 +31,11 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_layout);
+        Intent intentX = getIntent();
+        String name = intentX.getStringExtra("name");
+        String codename = intentX.getStringExtra("codename");
+        String id = intentX.getStringExtra("id");
+        String quantity = intentX.getStringExtra("quantity");
 
         //Initializing Views
 
@@ -37,6 +44,13 @@ public class AddActivity extends AppCompatActivity {
         editTextName        = (TextInputEditText) findViewById(R.id.input_name);
         editTextQuantity    = (TextInputEditText) findViewById(R.id.input_quantity);
         addButton           = (Button) findViewById(R.id.addButton);
+
+        editTextCodename.setText(codename);
+        editTextName.setText(name);
+        editTextId.setText(id);
+        editTextQuantity.setText(quantity);
+
+
     }
 
     private void insertUser() {
@@ -46,6 +60,8 @@ public class AddActivity extends AppCompatActivity {
         int quantity = Integer.parseInt(editTextQuantity.getText().toString());
         databaseHelper = new DatabaseHelper(this);
         databaseHelper.sendData(id, codename, name, quantity);
+     //   databaseHelper.downloadData();
+        finish();
     }
 
     public void addItem(View view) {

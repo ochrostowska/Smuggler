@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/single_row"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/lay"
+    android:background="@color/colorPurpleBackground"
+    android:padding="@dimen/row_padding">
+
+    <ImageView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/money"
+        android:background="@color/transparent"
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/nameInRow"
+        android:layout_width="0dp"
+        android:textSize="22dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Whaaaaat"
+        android:paddingLeft="@dimen/row_padding"
+        android:paddingRight="@dimen/row_padding"/>
+    <TextView
+        android:id="@+id/quantityInRow"
+        android:textSize="22dp"
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        style="@style/TextAppearance.FontBold"
+        android:layout_height="match_parent"
+        android:text="Quantity" />
+</LinearLayout>
+    <TextView
+        android:layout_below="@+id/lay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="@color/colorPurpleLight"/>
+</RelativeLayout>
