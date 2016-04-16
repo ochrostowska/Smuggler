@@ -11,7 +11,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/lay"
-    android:background="@color/colorPurpleBackground"
+
     android:padding="@dimen/row_padding">
 
     <ImageView
