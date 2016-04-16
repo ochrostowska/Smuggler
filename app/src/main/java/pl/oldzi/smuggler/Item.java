@@ -43,30 +43,4 @@ public class Item implements Serializable{
         this.quantity = quantity;
     }
 
-//    @Override
-//    public int describeContents() {
-//        return this.hashCode();
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeInt(item_id);
-//        dest.writeString(name);
-//        dest.writeString(codename);
-//        dest.writeInt(quantity)
-//    }
-//
-//    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-//    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
-//        public Item createFromParcel(Parcel in) {
-//            return new Item();
-//        }
-//
-//        public Item[] newArray(int size) {
-//            return new Item[][size];
-//        }
-//    };
-
-
-
 }

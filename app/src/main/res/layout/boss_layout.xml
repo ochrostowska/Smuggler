@@ -55,11 +55,11 @@
 
 
     <Button
-        android:id="@+id/buttonSell"
+        android:id="@+id/enterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:onClick="sellItem"
+        android:onClick="enter"
         android:text="Enter the kingdom"
         android:padding="10dp"
         android:textSize="20dp"
