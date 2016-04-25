@@ -2,14 +2,15 @@ package pl.oldzi.smuggler.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -30,44 +31,32 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO
-    //ADD boolean for checking activity status
-    Button addButton, sellButton, productsButton, bossButton;
-    public static DatabaseHelper databaseHelper;
-    List<Item> downloadedItems;
-    int i=1;
+    private Button addButton, sellButton, productsButton, bossButton;
+    private DatabaseHelper databaseHelper;
+    private List<Item> downloadedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MIMI", "onCreate");
         setContentView(R.layout.activity_main);
         initBackgroundImage();
         EventBus.getDefault().register(this);
-
         addButton       = (Button) findViewById(R.id.addButton);
         sellButton      = (Button) findViewById(R.id.sellButton);
         productsButton  = (Button) findViewById(R.id.productsButton);
         bossButton      = (Button) findViewById(R.id.bossModeButton);
-
         databaseHelper = new DatabaseHelper(this);
         databaseHelper.downloadData();
-
-
     }
 
     @Subscribe
     public void onEvent(MessageEvent event) {
         downloadedItems = databaseHelper.getItems();
         enableButtons(true);
-        //Log.d("MIMI", "Im here " + i + " time");
-        //i++;
-        //Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     public void add(View view) {
         try {
-
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
 
@@ -78,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
             Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
             Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
             startActivity(marketIntent);
-
         }
-
     }
 
     public void sell(View view) {
@@ -106,21 +93,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 String contents = data.getStringExtra("SCAN_RESULT");
-                Toast.makeText(this, "Result is " + contents, Toast.LENGTH_LONG).show();
-
                 Map jsonJavaRootObject = new Gson().fromJson(contents, Map.class);
 
                 boolean conId = jsonJavaRootObject.containsKey("item_id");
                 boolean conQ = jsonJavaRootObject.containsKey("quantity");
                 if (conId && conQ) {
-                    Log.d("ZAZI", "no req");
                     try {
                         String id = (String) jsonJavaRootObject.get("item_id");
                         String quantity = (String) jsonJavaRootObject.get("quantity");
                         String[] ids = databaseHelper.getIds();
                         int index = Arrays.asList(ids).indexOf(id);
                         if (index == -1) {
-                            Log.d("ZAZI", "No " + id + " id");
                             Intent intent = new Intent(this, AddActivity.class);
                             intent.putExtra("id", id);
                             intent.putExtra("quantity", quantity);
@@ -129,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             String name = databaseHelper.getName(index);
                             String codename = databaseHelper.getCodename(index);
-                            //textView.setText("Name is " + name + " Codename is " + codename + " Index is " + id);
                             Intent intent = new Intent(this, AddActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("codename", codename);
@@ -139,18 +121,23 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     } catch (Exception e) {
-                        Log.d("ZAZI", "Exception " + e.getMessage());
+                        Log.d("Exception", "Exception " + e.getMessage());
                     }
                 }
-
-
             }
         }
     }
 
     private void enableButtons(boolean enable) {
-        addButton.setEnabled(enable);
-        sellButton.setEnabled(enable);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean bossMode = sharedPreferences.getBoolean("bossMode", false);
+        if(!bossMode) {
+            addButton.setEnabled(bossMode);
+            sellButton.setEnabled(bossMode); }
+        else {
+            addButton.setEnabled(enable);
+            sellButton.setEnabled(enable);
+        }
         productsButton.setEnabled(enable);
         bossButton.setEnabled(enable);
     }
@@ -181,5 +168,4 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
         databaseHelper.downloadData();
     }
-
 }

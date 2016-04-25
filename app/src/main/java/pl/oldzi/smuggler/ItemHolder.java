@@ -8,7 +8,6 @@ import android.widget.TextView;
  * Created by Oldzi on 09.04.2016.
  */
 public class ItemHolder extends RecyclerView.ViewHolder {
-
     protected TextView name;
     protected TextView quantity;
 
@@ -17,6 +16,4 @@ public class ItemHolder extends RecyclerView.ViewHolder {
         this.name = (TextView) view.findViewById(R.id.nameInRow);
         this.quantity = (TextView) view.findViewById(R.id.quantityInRow);
     }
-
-
 }

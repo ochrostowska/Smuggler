@@ -17,11 +17,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class DatabaseHelper {
-    public static final String ROOT_URL = "https://patryk-mnie-uczy.azurewebsites.net/";
-    static List<Item> items;
+    private static final String ROOT_URL = "https://patryk-mnie-uczy.azurewebsites.net/";
+    private static List<Item> items;
     private Context context;
-
-    public DatabaseHelper() {}
 
     public DatabaseHelper(Context context) {
         this.context = context;
@@ -89,9 +87,6 @@ public class DatabaseHelper {
             @Override
             public void success(List<Item> list, Response response) {
                 items = list;
-
-                Log.d("MIMI", "Items size is " + items.size());
-
                 EventBus.getDefault().post(new MessageEvent("Downloading successful"));
             }
 
@@ -142,7 +137,6 @@ public class DatabaseHelper {
         return items.get(id).getCodename();
     }
 
-
     public static int getQuantity(int id) {
         return items.get(id).getQuantity();
     }
@@ -151,26 +145,4 @@ public class DatabaseHelper {
         return items.get(id).getItem_id();
     }
 
-
-
 }
-
-
-////
-////        //Our method to show list
-////        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-////        private void showList () {
-////            //String array to store all the book names
-////            final String[] names = new String[items.size()];
-////
-////            Log.d("MIMI", "Names length is : " + names.length);
-////            Log.d("MIMI", "HEY");
-////            //Traversing through the whole list to get all the names
-////            for (int i = 0; i < items.size(); i++) {
-////                //Storing names to string array
-////                names[i] = items.get(i).getName();
-////                Log.d("MIMI", "Names[" + i + "] is " + names[i]);
-////            }
-////
-////        }
-//

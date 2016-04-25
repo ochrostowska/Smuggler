@@ -16,10 +16,12 @@ public class SmugglerRecyclerAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     private List<Item> itemList;
     private Context context;
+    private boolean inBossMode;
 
-    public SmugglerRecyclerAdapter(Context context, List<Item> items) {
+    public SmugglerRecyclerAdapter(Context context, List<Item> itemList, boolean inBossMode) {
         this.context = context;
-        itemList = items;
+        this.itemList = itemList;
+        this.inBossMode = inBossMode;
     }
 
     @Override
@@ -33,7 +35,9 @@ public class SmugglerRecyclerAdapter extends RecyclerView.Adapter<ItemHolder> {
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
         Item item = itemList.get(position);
-        holder.name.setText(item.getName());
+        if(inBossMode)
+        holder.name.setText(item.getCodename());
+        else holder.name.setText(item.getName());
         holder.quantity.setText(String.valueOf(item.getQuantity()));
     }
 

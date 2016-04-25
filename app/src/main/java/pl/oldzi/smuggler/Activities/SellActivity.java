@@ -1,6 +1,5 @@
 package pl.oldzi.smuggler.Activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
@@ -16,7 +15,6 @@ import java.util.Arrays;
 
 import pl.oldzi.smuggler.DatabaseHelper;
 import pl.oldzi.smuggler.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SellActivity extends BaseMenuActivity {
 
@@ -24,27 +22,24 @@ public class SellActivity extends BaseMenuActivity {
     private TextView idTV, codenameTV;
     private TextInputEditText quantityET;
     private Button sellButton;
-    private boolean readyTosend=false;
+    private boolean readyToSend = false;
     private String sendName, sendCodename;
     private int sendQuantity, sendId;
     private int index;
     private DatabaseHelper databaseHelper;
-    String answerName = "item";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sell_layout);
-        textView = (AutoCompleteTextView) findViewById(R.id.nameAutoCompleteTV);
-        idTV = (TextView) findViewById(R.id.textView_id);
-        sellButton = (Button) findViewById(R.id.buttonSell);
-        codenameTV = (TextView) findViewById(R.id.textView_codename);
-        quantityET = (TextInputEditText) findViewById(R.id.textinput_quantity);
+        textView    = (AutoCompleteTextView) findViewById(R.id.nameAutoCompleteTV);
+        idTV        = (TextView) findViewById(R.id.textView_id);
+        sellButton  = (Button) findViewById(R.id.buttonSell);
+        codenameTV  = (TextView) findViewById(R.id.textView_codename);
+        quantityET  = (TextInputEditText) findViewById(R.id.textinput_quantity);
         sellButton.setEnabled(false);
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(this);
         getNames();
-
     }
 
     private void getNames() {
@@ -74,7 +69,7 @@ public class SellActivity extends BaseMenuActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                answerName = textView.getText().toString();
+                String answerName = textView.getText().toString();
                 index = Arrays.asList(dropDownList).indexOf(answerName);
 
                 if (index == -1) {
@@ -82,7 +77,7 @@ public class SellActivity extends BaseMenuActivity {
                     codenameTV  .setText(" ");
 
                     sellButton.setEnabled(false);
-                    readyTosend = false;
+                    readyToSend = false;
 
                 } else {
                     sendName        = answerName;
@@ -92,30 +87,25 @@ public class SellActivity extends BaseMenuActivity {
                     codenameTV      .setText(sendCodename);
 
                     sellButton.setEnabled(true);
-                    readyTosend = true;
+                    readyToSend = true;
                 }
             }
         });
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
     public void sellItem(View view) {
        int numberToSell = 1;
-        if(readyTosend) {
+        if(readyToSend) {
             sendQuantity = Integer.parseInt(quantityET.getText().toString());
-            DatabaseHelper helper = new DatabaseHelper(this);
-            if(sendQuantity<helper.getQuantity(index)) {
+            //DatabaseHelper helper = new DatabaseHelper(this);
+            if(sendQuantity<databaseHelper.getQuantity(index)) {
                 sendQuantity=sendQuantity*(-1);
-                helper.sendData(sendId, sendCodename, sendName, sendQuantity);
+                databaseHelper.sendData(sendId, sendCodename, sendName, sendQuantity);
             } else {
                 quantityET.setTextColor(getResources().getColor(R.color.colorPrimary));
-                Toast.makeText(this, "Too much", Toast.LENGTH_SHORT).show(); }
+                Toast.makeText(this, "We don't have as many items!", Toast.LENGTH_SHORT).show(); }
         }
-        Toast.makeText(this, "Its " + numberToSell, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You sold " + numberToSell + " items!", Toast.LENGTH_SHORT).show();
     }
 }
 

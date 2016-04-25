@@ -15,7 +15,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class AddActivity extends BaseMenuActivity {
 
-    //Declaring views
     private TextInputEditText editTextId;
     private TextInputEditText editTextCodename;
     private TextInputEditText editTextName;
@@ -24,20 +23,18 @@ public class AddActivity extends BaseMenuActivity {
 
     private Button addButton;
 
-    //This is our root url
     public static final String ROOT_URL = "http://10.0.3.2/webapp/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_layout);
-        Intent intentX = getIntent();
-        String name = intentX.getStringExtra("name");
+        Intent intentX  = getIntent();
+        String name     = intentX.getStringExtra("name");
         String codename = intentX.getStringExtra("codename");
-        String id = intentX.getStringExtra("id");
+        String id       = intentX.getStringExtra("id");
         String quantity = intentX.getStringExtra("quantity");
 
-        //Initializing Views
 
         editTextId          = (TextInputEditText) findViewById(R.id.input_id);
         editTextCodename    = (TextInputEditText) findViewById(R.id.input_codename);
@@ -60,7 +57,6 @@ public class AddActivity extends BaseMenuActivity {
         int quantity = Integer.parseInt(editTextQuantity.getText().toString());
         databaseHelper = new DatabaseHelper(this);
         databaseHelper.sendData(id, codename, name, quantity);
-     //   databaseHelper.downloadData();
         finish();
     }
 
@@ -85,124 +81,3 @@ public class AddActivity extends BaseMenuActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
-//
-//package pl.oldzi.smuggler;
-//
-//import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
-//import android.util.Log;
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.EditText;
-//import android.widget.TextView;
-//
-//import com.android.volley.AuthFailureError;
-//import com.android.volley.Request;
-//import com.android.volley.RequestQueue;
-//import com.android.volley.Response;
-//import com.android.volley.Response.ErrorListener;
-//import com.android.volley.VolleyError;
-//import com.android.volley.toolbox.JsonObjectRequest;
-//import com.android.volley.toolbox.StringRequest;
-//import com.android.volley.toolbox.Volley;
-//
-//import org.json.JSONArray;
-//import org.json.JSONException;
-//import org.json.JSONObject;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//
-//public class AddActivity extends AppCompatActivity {
-//
-//    EditText id, nameET, codename, quantity;
-//    Button addButton, showButton;
-//    TextView result;
-//    RequestQueue requestQueue;
-//    String showUrl = "http://patryk-mnie-uczy.azurewebsites.net/listItems.php";
-//    String insertUrl = "http://patryk-mnie-uczy.azurewebsites.net/volleyRegister.php";
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.add_layout);
-//        id = (EditText) findViewById(R.id.idET);
-//        nameET = (EditText) findViewById(R.id.nameET);
-//        codename = (EditText) findViewById(R.id.codenameET);
-//        quantity = (EditText) findViewById(R.id.quantityET);
-//        addButton = (Button) findViewById(R.id.addButton);
-//        showButton = (Button) findViewById(R.id.showButton);
-//        result = (TextView) findViewById(R.id.resultTV);
-//
-//        requestQueue = Volley.newRequestQueue(getApplicationContext());
-//
-//    }
-//
-//    public void addItem(View view) {
-//
-//        StringRequest request = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("MIMI", "Response: " + response);
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("MIMI", "Another error: " + error);
-//            }
-//        }) {
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                String idS = id.getText().toString();
-//                String codenameS = codename.getText().toString();
-//                String nameS = nameET.getText().toString();
-//                String quantityS = quantity.getText().toString();
-//
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("itemid", idS);
-//                Log.d("MIMI", "It's id is : " + idS);
-//                params.put("codename", codenameS);
-//                params.put("name", nameS);
-//                Log.d("MIMI", "It's codename is : " + codename.getText().toString());
-//
-//                params.put("quantity", quantityS);
-//
-//                return params;
-//            }
-//        };
-//        requestQueue.add(request);
-//    }
-//
-//    public void showItem(View view) {
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, showUrl, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                try {
-//                    JSONArray items = response.getJSONArray("smugglerItems");
-//                    for( int i = 0; i < items.length(); i++) {
-//                        JSONObject item = items.getJSONObject(i);
-//
-//                        String name = item.getString("name");
-//                        Log.d("MIMI", "Name :" + name);
-//                        String codename = item.getString("codename");
-//
-//                        result.append(name + " " + codename + "\n");
-//                    }
-//                    result.append("===\n");
-//                } catch (JSONException e) {
-//                    Log.d("MIMI", "Json ex");
-//                }
-//
-//            }
-//        }, new ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("MIMI", "Another error: " + error);
-//            }
-//        });
-//        requestQueue.add(jsonObjectRequest);
-//    }
-//
-//}
-//

@@ -2,7 +2,9 @@ package pl.oldzi.smuggler.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -31,6 +33,7 @@ public class ProductsActivity extends BaseMenuActivity {
     private RecyclerView productsRecyclerView;
     ArrayList<Item> items;
     private SmugglerRecyclerAdapter recyclerAdapter;
+    private boolean inBossMode;
 //    DatabaseHelper databaseHelper;
 //
 //    private List<Item> items;
@@ -43,10 +46,12 @@ public class ProductsActivity extends BaseMenuActivity {
         Intent i = getIntent();
         items = (ArrayList<Item>) i
                 .getSerializableExtra("items");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        inBossMode = sharedPreferences.getBoolean("bossMode", false);
 
         productsRecyclerView = (RecyclerView) findViewById(R.id.smugglerRecyclerView);
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new SmugglerRecyclerAdapter(this, items);
+        recyclerAdapter = new SmugglerRecyclerAdapter(this, items, inBossMode);
         productsRecyclerView.setAdapter(recyclerAdapter);
 
 
@@ -57,7 +62,11 @@ public class ProductsActivity extends BaseMenuActivity {
     private void showList(){
         final String[] names = new String[items.size()] ;
         for(int i=0; i<items.size(); i++) {
-            names[i] = items.get(i).getName();
+            if (inBossMode)
+                names[i] = items.get(i).getCodename();
+            else
+                names[i] = items.get(i).getName();
+
         }
 
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, names);
@@ -101,21 +110,6 @@ public class ProductsActivity extends BaseMenuActivity {
 
             }
         });
-//        textView.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-//            @Override
-//            public void onDismiss() {
-//                String answerName = textView.getText().toString();
-//                int index = Arrays.asList(dropDownlist).indexOf(answerName);
-//                if (index == -1) {
-//                    Log.d("MAMA2", answerName + "isnt here");
-//                } else {
-//                    Log.d("MAMA2", answerName + "is here");
-//                }
-//            }
-//        });
-
-
-
     }
 
     @Override
