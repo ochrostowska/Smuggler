@@ -1,35 +1,29 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.view;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * Created by Oldzi on 30.03.2016.
- */
+import pl.oldzi.smuggler.Item;
+import pl.oldzi.smuggler.R;
+
 public class SmugglerRecyclerAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     private List<Item> itemList;
-    private Context context;
     private boolean inBossMode;
 
-    public SmugglerRecyclerAdapter(Context context, List<Item> itemList, boolean inBossMode) {
-        this.context = context;
+    public SmugglerRecyclerAdapter(List<Item> itemList, boolean inBossMode) {
         this.itemList = itemList;
         this.inBossMode = inBossMode;
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("ITA", "Hi im creating onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_row_layout, parent, false);
-        ItemHolder holder = new ItemHolder(view);
-        return holder;
+        return new ItemHolder(view);
     }
 
     @Override

@@ -5,24 +5,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorPurpleBackground"
-        android:padding="18dp">
+        android:padding="@dimen/row_layout_padding">
 
         <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:contentDescription="@string/gold_bag_image"
+            android:layout_width="@dimen/recycler_icon_size"
+            android:layout_height="@dimen/recycler_icon_size"
             android:src="@drawable/money"
             android:background="@color/transparent"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Product"
-            android:textSize="18dp"
+            android:text="@string/row_product"
+            android:textSize="@dimen/recycler_text_size"
             android:paddingLeft="@dimen/row_padding"
             android:paddingRight="@dimen/row_padding"/>
         <TextView
-            android:textSize="18dp"
+            android:textSize="@dimen/recycler_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantity" />
+            android:text="@string/row_quantity" />
     </LinearLayout>

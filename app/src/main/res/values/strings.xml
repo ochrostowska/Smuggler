@@ -4,4 +4,21 @@
     <string name="codename">Codename</string>
     <string name="id">Item Id</string>
     <string name="quantity">Quantity</string>
+    <string name="gold_bag_image">gold</string>
+    <string name="row_product">Product</string>
+    <string name="row_quantity">Quantity</string>
+    <string name="sell">Sell</string>
+    <string name="sell_small">sell</string>
+    <string name="sell_item">Sell item</string>
+    <string name="info">Info</string>
+    <string name="boss_mode_enter">Enter the kingdom</string>
+    <string name="log_out">Log Out</string>
+    <string name="boss_mode_question">What\'s the password?</string>
+    <string name="boss_mode">Boss mode</string>
+    <string name="boss_mode_small">boss mode</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="add">Add</string>
+    <string name="add_small">add</string>
+    <string name="products_small">products</string>
+
 </resources>

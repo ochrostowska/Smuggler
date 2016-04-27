@@ -1,4 +1,4 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.database;
 
 
 import java.util.List;
@@ -9,6 +9,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import pl.oldzi.smuggler.Item;
 
 public interface ItemsAPI {
 

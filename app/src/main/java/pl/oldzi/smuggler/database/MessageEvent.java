@@ -1,4 +1,4 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.database;
 
 public class MessageEvent {
     public String message;

@@ -14,7 +14,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbarX"
-            android:paddingRight="5dp"
+            android:paddingRight="@dimen/margin_5"
             android:layout_width="match_parent"
             android:background="@color/colorPrimary"
             android:layout_height="?attr/actionBarSize"
@@ -22,15 +22,13 @@
         <TextView
             android:id="@+id/blackLine"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_below="@+id/main_background"
+            android:layout_height="@dimen/toolbar_black_line_size"
             android:background="@color/black"
             android:layout_gravity="bottom"/>
 
         <TextView
-            android:layout_below="@id/blackLine"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="@dimen/toolbar_white_line_size"
             android:background="@color/white"
             android:layout_gravity="bottom"/>
 

@@ -7,22 +7,22 @@
         android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
         android:id="@+id/imageView"
         android:src="@drawable/buy"
         android:scaleType="centerInside"
         android:layout_gravity="center"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="@dimen/margin_5"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_view_margin"
-            android:textSize="30dp"
+            android:textSize="@dimen/text_32"
             android:textAppearance="@style/TextAppearance.FontBold"
             android:gravity="center_horizontal"
-            android:text="Add new item"
+            android:text="@string/add_new_item"
             android:textAllCaps="false" />
 
         <android.support.design.widget.TextInputLayout
@@ -92,8 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:onClick="addItem"
-            android:text="add"
-            android:layout_marginTop="20dp"
+            android:text="@string/add"
+            android:layout_marginTop="@dimen/margin_20"
 
             android:background="@drawable/background_selector"/>
 </LinearLayout>

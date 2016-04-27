@@ -1,4 +1,4 @@
-package pl.oldzi.smuggler;
+package pl.oldzi.smuggler.database;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import pl.oldzi.smuggler.Item;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -47,10 +48,10 @@ public class DatabaseHelper {
                     public void success(Response result, Response response) {
                         //On success we will read the server's output using bufferedreader
                         //Creating a bufferedreader object
-                        BufferedReader reader = null;
+                        BufferedReader reader;
 
                         Log.d("MIMI", "Callback response is : " +response.getBody());
-                        //An string to store output from the server - czyli to co echuję
+                        //An string to store output from the server - "ECHO" from php file
                         String output = "";
 
                         try {
@@ -105,7 +106,7 @@ public class DatabaseHelper {
         return names;
     }
 
-    public String[] getCodenames() {
+    public String[] getCodeNames() {
         final String[] codenames = new String[items.size()];
         for (int i = 0; i < items.size(); i++) {
             codenames[i] = items.get(i).getCodename();
@@ -133,15 +134,15 @@ public class DatabaseHelper {
         return items.get(id).getName();
     }
 
-    public static String getCodename(int id) {
+    public String getCodeName(int id) {
         return items.get(id).getCodename();
     }
 
-    public static int getQuantity(int id) {
+    public int getQuantity(int id) {
         return items.get(id).getQuantity();
     }
 
-    public static int getItemId(int id) {
+    public int getItemId(int id) {
         return items.get(id).getItem_id();
     }
 

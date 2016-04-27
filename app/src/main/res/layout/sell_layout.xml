@@ -16,71 +16,68 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:id="@+id/imageView"
             android:src="@drawable/sell"
             android:scaleType="centerInside"
             android:layout_gravity="center"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="@dimen/margin_5"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_view_margin"
-            android:textSize="32dp"
+            android:textSize="@dimen/text_32"
             android:layout_gravity="center"
             android:textAppearance="@style/TextAppearance.FontBold"
-            android:text="Sell item"
+            android:text="@string/sell_item"
             android:textAllCaps="false" />
-
 
     <TextView
         android:id="@+id/tt2"
-        android:text="Name"
+        android:text="@string/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <AutoCompleteTextView
         android:id="@+id/nameAutoCompleteTV"
         android:layout_width="match_parent"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_24"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="@dimen/margin_10"/>
 
     <TextView
         android:id="@+id/tt3"
-        android:text="Codename"
+        android:text="@string/codename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/textView_codename"
-        android:padding="10dp"
-        android:text="Codename"
-        android:textSize="20sp"
+        android:padding="@dimen/margin_10"
+        android:textSize="@dimen/text_20"
         android:textColor="@color/colorOrangeCasablanca"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tt4"
-        android:text="Id"
+        android:text="@string/id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/textView_id"
         android:text=" "
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingTop="@dimen/margin_10"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10"
         android:textColor="@color/colorOrangeCasablanca"
-        android:textSize="20dp"
+        android:textSize="@dimen/text_20"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -91,9 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_view_margin"
-            android:hint="Quantity"
-            android:textSize="20dp"
-            android:padding="10dp"
+            android:hint="@string/quantity"
+            android:textSize="@dimen/text_20"
+            android:padding="@dimen/margin_10"
             android:imeOptions="flagNoExtractUi"
             android:inputType="number" />
 
@@ -105,10 +102,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="sellItem"
-        android:text="Sell"
-        android:textSize="20dp"
+        android:text="@string/sell"
+        android:textSize="@dimen/text_20"
         android:textAllCaps="false"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/background_selector"/>
 
         </LinearLayout>

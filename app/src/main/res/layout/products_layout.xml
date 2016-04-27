@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity"
+    tools:context=".activities.MainActivity"
     android:background="@drawable/gradient_background">
 
 
@@ -12,26 +12,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
-
-
     </RelativeLayout>
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Search"/>-->
-
-    <!--<AutoCompleteTextView-->
-        <!--android:layout_below="@+id/tv"-->
-        <!--android:id="@+id/autoCompleteTV"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
-
-    <!--<ListView-->
-        <!--android:layout_below="@+id/autoCompleteTV"-->
-        <!--android:id="@+id/listViewProducts"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
-
-<!--</RelativeLayout>-->
