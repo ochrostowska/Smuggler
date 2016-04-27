@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import pl.oldzi.smuggler.DatabaseHelper;
+import pl.oldzi.smuggler.database.DatabaseHelper;
 import pl.oldzi.smuggler.Item;
-import pl.oldzi.smuggler.MessageEvent;
+import pl.oldzi.smuggler.database.MessageEvent;
 import pl.oldzi.smuggler.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                         } else {
                             String name = databaseHelper.getName(index);
-                            String codename = databaseHelper.getCodename(index);
+                            String codename = databaseHelper.getCodeName(index);
                             Intent intent = new Intent(this, AddActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("codename", codename);
@@ -136,8 +136,7 @@ public class MainActivity extends AppCompatActivity {
             sellButton.setEnabled(bossMode); }
         else {
             addButton.setEnabled(enable);
-            sellButton.setEnabled(enable);
-        }
+            sellButton.setEnabled(enable); }
         productsButton.setEnabled(enable);
         bossButton.setEnabled(enable);
     }

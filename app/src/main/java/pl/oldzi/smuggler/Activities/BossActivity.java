@@ -21,10 +21,10 @@ public class BossActivity extends BaseMenuActivity {
         passwordET = (TextInputEditText) findViewById(R.id.bossPasswordTV);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
+
         public boolean isPass() {
             String userPassInput = passwordET.getText().toString().trim();
-            if(userPassInput.equals(PASSWORD)) return true;
-            return false;
+            return userPassInput.equals(PASSWORD);
         }
 
     public void enter(View view) {

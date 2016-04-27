@@ -2,6 +2,7 @@ package pl.oldzi.smuggler.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
-import pl.oldzi.smuggler.DatabaseHelper;
+import pl.oldzi.smuggler.database.DatabaseHelper;
 import pl.oldzi.smuggler.R;
 
 public class SellActivity extends BaseMenuActivity {
@@ -81,13 +82,14 @@ public class SellActivity extends BaseMenuActivity {
 
                 } else {
                     sendName        = answerName;
-                    sendId          = DatabaseHelper.getItemId(index);
-                    sendCodename    = DatabaseHelper.getCodename(index);
+                    sendId          = databaseHelper.getItemId(index);
+                    sendCodename    = databaseHelper.getCodeName(index);
                     idTV            .setText(String.valueOf(sendId));
                     codenameTV      .setText(sendCodename);
 
                     sellButton.setEnabled(true);
                     readyToSend = true;
+                    //hehe
                 }
             }
         });
@@ -97,12 +99,11 @@ public class SellActivity extends BaseMenuActivity {
        int numberToSell = 1;
         if(readyToSend) {
             sendQuantity = Integer.parseInt(quantityET.getText().toString());
-            //DatabaseHelper helper = new DatabaseHelper(this);
             if(sendQuantity<databaseHelper.getQuantity(index)) {
                 sendQuantity=sendQuantity*(-1);
                 databaseHelper.sendData(sendId, sendCodename, sendName, sendQuantity);
             } else {
-                quantityET.setTextColor(getResources().getColor(R.color.colorPrimary));
+                quantityET.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimary));
                 Toast.makeText(this, "We don't have as many items!", Toast.LENGTH_SHORT).show(); }
         }
         Toast.makeText(this, "You sold " + numberToSell + " items!", Toast.LENGTH_SHORT).show();

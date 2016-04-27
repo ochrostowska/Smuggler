@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import pl.oldzi.smuggler.DatabaseHelper;
+import pl.oldzi.smuggler.database.DatabaseHelper;
 import pl.oldzi.smuggler.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -19,8 +19,6 @@ public class AddActivity extends BaseMenuActivity {
     private TextInputEditText editTextCodename;
     private TextInputEditText editTextName;
     private TextInputEditText editTextQuantity;
-    private DatabaseHelper databaseHelper;
-
     private Button addButton;
 
     public static final String ROOT_URL = "http://10.0.3.2/webapp/";
@@ -41,13 +39,10 @@ public class AddActivity extends BaseMenuActivity {
         editTextName        = (TextInputEditText) findViewById(R.id.input_name);
         editTextQuantity    = (TextInputEditText) findViewById(R.id.input_quantity);
         addButton           = (Button) findViewById(R.id.addButton);
-
         editTextCodename.setText(codename);
         editTextName.setText(name);
         editTextId.setText(id);
         editTextQuantity.setText(quantity);
-
-
     }
 
     private void insertUser() {
@@ -55,7 +50,7 @@ public class AddActivity extends BaseMenuActivity {
         String codename = editTextCodename.getText().toString();
         String name = editTextName.getText().toString();
         int quantity = Integer.parseInt(editTextQuantity.getText().toString());
-        databaseHelper = new DatabaseHelper(this);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
         databaseHelper.sendData(id, codename, name, quantity);
         finish();
     }
@@ -69,11 +64,7 @@ public class AddActivity extends BaseMenuActivity {
     }
 
     private boolean checkIfEmpty(TextInputEditText editText) {
-        if (editText.getText().toString().trim().length() > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return editText.getText().toString().trim().length() <= 0;
     }
 
     @Override
