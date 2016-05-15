@@ -3,26 +3,25 @@ package pl.oldzi.smuggler.database;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
+import okhttp3.ResponseBody;
 import pl.oldzi.smuggler.Item;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface ItemsAPI {
 
     @GET("/listItems.php")
-    void getItems(Callback<List<Item>> response);
+    Call<List<Item>> getItems();
 
     @FormUrlEncoded
     @POST("/volleyRegister.php")
-    void insertUser(
+    Call<ResponseBody> insertUser(
             @Field("item_id") int item_id,
             @Field("codename") String codename,
             @Field("name") String name,
-            @Field("quantity") int quantity,
-            Callback<Response> callback);
+            @Field("quantity") int quantity);
 
 }
