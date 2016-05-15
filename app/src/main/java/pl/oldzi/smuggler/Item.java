@@ -2,7 +2,7 @@ package pl.oldzi.smuggler;
 
 import java.io.Serializable;
 
-public class Item implements Serializable{
+public class Item implements Serializable {
 
     //Variables that are in our json
     private int item_id;

@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import pl.oldzi.smuggler.database.DatabaseHelper;
 import pl.oldzi.smuggler.Item;
-import pl.oldzi.smuggler.database.MessageEvent;
 import pl.oldzi.smuggler.R;
+import pl.oldzi.smuggler.database.DatabaseHelper;
+import pl.oldzi.smuggler.database.MessageEvent;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,19 +34,24 @@ public class MainActivity extends AppCompatActivity {
     private Button addButton, sellButton, productsButton, bossButton;
     private DatabaseHelper databaseHelper;
     private List<Item> downloadedItems;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initBackgroundImage();
-        EventBus.getDefault().register(this);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+
         addButton       = (Button) findViewById(R.id.addButton);
         sellButton      = (Button) findViewById(R.id.sellButton);
         productsButton  = (Button) findViewById(R.id.productsButton);
         bossButton      = (Button) findViewById(R.id.bossModeButton);
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = DatabaseHelper.getInstance();
         databaseHelper.downloadData();
+
+
     }
 
     @Subscribe
@@ -96,29 +101,21 @@ public class MainActivity extends AppCompatActivity {
                 Map jsonJavaRootObject = new Gson().fromJson(contents, Map.class);
 
                 boolean conId = jsonJavaRootObject.containsKey("item_id");
-                boolean conQ = jsonJavaRootObject.containsKey("quantity");
-                if (conId && conQ) {
+                boolean conQuantity = jsonJavaRootObject.containsKey("quantity");
+                if (conId && conQuantity) {
                     try {
                         String id = (String) jsonJavaRootObject.get("item_id");
                         String quantity = (String) jsonJavaRootObject.get("quantity");
                         String[] ids = databaseHelper.getIds();
                         int index = Arrays.asList(ids).indexOf(id);
-                        if (index == -1) {
-                            Intent intent = new Intent(this, AddActivity.class);
-                            intent.putExtra("id", id);
-                            intent.putExtra("quantity", quantity);
-                            startActivity(intent);
 
+                        //TODO przetestuj czy ta metoda dziala
+                        if (index == -1) {
+                            startAddActivity(id, quantity);
                         } else {
                             String name = databaseHelper.getName(index);
                             String codename = databaseHelper.getCodeName(index);
-                            Intent intent = new Intent(this, AddActivity.class);
-                            intent.putExtra("name", name);
-                            intent.putExtra("codename", codename);
-                            intent.putExtra("id", id);
-                            intent.putExtra("quantity", quantity);
-                            startActivity(intent);
-
+                            startAddActivity(id,quantity,name,codename);
                         }
                     } catch (Exception e) {
                         Log.d("Exception", "Exception " + e.getMessage());
@@ -128,15 +125,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void startAddActivity(String... data) {
+        if(data.length>=2 && data.length<=4) {
+            Intent intent = new Intent(this, AddActivity.class);
+            intent.putExtra("id", data[0]);
+            intent.putExtra("quantity", data[1]);
+            if (data.length == 4) {
+                intent.putExtra("name", data[2]);
+                intent.putExtra("codename", data[3]);
+            }
+            startActivity(intent);
+        }
+    }
+
     private void enableButtons(boolean enable) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean bossMode = sharedPreferences.getBoolean("bossMode", false);
+
         if(!bossMode) {
             addButton.setEnabled(bossMode);
-            sellButton.setEnabled(bossMode); }
-        else {
+            sellButton.setEnabled(bossMode);
+        } else {
             addButton.setEnabled(enable);
-            sellButton.setEnabled(enable); }
+            sellButton.setEnabled(enable);
+        }
         productsButton.setEnabled(enable);
         bossButton.setEnabled(enable);
     }
@@ -158,13 +170,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         enableButtons(false);
-        EventBus.getDefault().unregister(this);
+        if(eventBus.isRegistered(this)) eventBus.unregister(this);
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        EventBus.getDefault().register(this);
+    protected void onResume() {
+        super.onResume();
+        if(!eventBus.isRegistered(this)) eventBus.register(this);
         databaseHelper.downloadData();
     }
 }

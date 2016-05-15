@@ -1,102 +1,93 @@
 package pl.oldzi.smuggler.database;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import pl.oldzi.smuggler.Item;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DatabaseHelper {
     private static final String ROOT_URL = "https://patryk-mnie-uczy.azurewebsites.net/";
+    public static final String TAG = DatabaseHelper.class.getSimpleName();
     private static List<Item> items;
-    private Context context;
+    private ItemsAPI api;
 
-    public DatabaseHelper(Context context) {
-        this.context = context;
+    private static DatabaseHelper ourInstance;
+
+    public static DatabaseHelper getInstance() {
+        if(ourInstance==null) ourInstance = new DatabaseHelper();
+        return ourInstance;
+    }
+
+    public DatabaseHelper() {
+    }
+
+    private void initializeRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ROOT_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        api = retrofit.create(ItemsAPI.class);
+    }
+
+    public void sendData(int id, String codename, String name, int quantity) {
+
+        initializeRetrofit();
+        Call<ResponseBody> call = api.insertUser(id, codename, name, quantity);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String output = "";
+
+                try {
+                    output = response.body().string();
+                    Log.d(TAG, output);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+            }
+        });
+    }
+
+
+    public void downloadData() {
+        initializeRetrofit();
+        Call<List<Item>> call = api.getItems();
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                items = response.body();
+                EventBus.getDefault().post(new MessageEvent("Downloading successful"));
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+            }
+        });
     }
 
     public List<Item> getItems() {
         return items;
     }
 
-    public void sendData(int id, String codename, String name, int quantity) {
-
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL) //Setting the Root URL
-                .build(); //Finally building the adapter
-
-        //Creating object for our interface
-        ItemsAPI api = adapter.create(ItemsAPI.class);
-
-        api.insertUser(
-                id, codename, name, quantity,
-
-                //Creating an anonymous callback
-                new Callback<Response>() {
-                    @Override
-                    public void success(Response result, Response response) {
-                        //On success we will read the server's output using bufferedreader
-                        //Creating a bufferedreader object
-                        BufferedReader reader;
-
-                        Log.d("MIMI", "Callback response is : " +response.getBody());
-                        //An string to store output from the server - "ECHO" from php file
-                        String output = "";
-
-                        try {
-                            //Initializing buffered reader
-                            reader = new BufferedReader(new InputStreamReader(result.getBody().in()));
-
-                            //Reading the output in the string
-                            output = reader.readLine();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(context, output, Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        //If any error occured displaying the error as toast
-                        Log.d("MIMI", error.getMessage());
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-    }
+    // TODO: ZROBIC Z TEGO JEDNA METODE!!!
 
 
-    public void downloadData() {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL)
-                .build();
-
-        ItemsAPI api = adapter.create(ItemsAPI.class);
-
-        api.getItems(new Callback<List<Item>>() {
-            @Override
-            public void success(List<Item> list, Response response) {
-                items = list;
-                EventBus.getDefault().post(new MessageEvent("Downloading successful"));
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("MIMI", error.getMessage());
-            }
-        });
-    }
 
     public String[] getNames() {
         final String[] names = new String[items.size()];
@@ -145,5 +136,5 @@ public class DatabaseHelper {
     public int getItemId(int id) {
         return items.get(id).getItem_id();
     }
-
 }
+

@@ -38,7 +38,7 @@ public class BaseMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.info_menu_item) {
-            Toast.makeText(this, "Info was clicked!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password for boss mode is 'kluseczka' " , Toast.LENGTH_SHORT).show();
         }
         if(item.getItemId()==android.R.id.home) {
             finish();
