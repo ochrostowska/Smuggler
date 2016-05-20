@@ -95,16 +95,15 @@ public class SellActivity extends BaseMenuActivity {
     }
 
     public void sellItem(View view) {
-       int numberToSell = 1;
         if (readyToSend) {
             int sendQuantity = Integer.parseInt(quantityET.getText().toString());
             if (sendQuantity < databaseHelper.getQuantity(index)) {
                 sendQuantity = sendQuantity * (-1);
                 databaseHelper.sendData(sendId, sendCodename, sendName, sendQuantity);
-                Toast.makeText(this, "You sold " + numberToSell + " items!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You sold " + sendQuantity*(-1) + " items!", Toast.LENGTH_SHORT).show();
             } else {
                 quantityET.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimary));
-                Toast.makeText(this, "We don't have that many items!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "We don't have as many " + databaseHelper.getName(index) + "!", Toast.LENGTH_SHORT).show();
             }
         }
     }

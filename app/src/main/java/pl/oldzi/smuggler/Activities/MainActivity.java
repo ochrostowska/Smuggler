@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public void add(View view) {
         try {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 
             startActivityForResult(intent, 0);
 
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                         String[] ids = databaseHelper.getIds();
                         int index = Arrays.asList(ids).indexOf(id);
 
-                        //TODO przetestuj czy ta metoda dziala
                         if (index == -1) {
                             startAddActivity(id, quantity);
                         } else {
@@ -176,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        enableButtons(false);
         if(!eventBus.isRegistered(this)) eventBus.register(this);
         databaseHelper.downloadData();
     }
