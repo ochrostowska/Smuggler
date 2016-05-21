@@ -1,5 +1,6 @@
 package pl.oldzi.smuggler.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,9 +20,15 @@ public class ProductsActivity extends BaseMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.products_layout);
-
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
-        List<Item> items = databaseHelper.getItems();
+        Intent intent = getIntent();
+        List<Item> items;
+        try {
+            items = (List<Item>) intent.getSerializableExtra("items");
+        } catch (Exception e) {
+            // Alternatywna wersja pobierania itemsów
+            DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+           items = databaseHelper.getItems();
+        }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean inBossMode = sharedPreferences.getBoolean("bossMode", false);

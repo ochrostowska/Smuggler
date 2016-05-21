@@ -87,8 +87,6 @@ public class DatabaseHelper {
 
     // TODO: ZROBIC Z TEGO JEDNA METODE!!!
 
-
-
     public String[] getNames() {
         final String[] names = new String[items.size()];
         for (int i = 0; i < items.size(); i++) {
